@@ -179,7 +179,12 @@ export class AdminPanelService {
   }
 
   async getVersionInfo(): Promise<VersionInfoDTO> {
-    const currentVersion = this.twentyConfigService.get('APP_VERSION');
+    const appVersion = this.twentyConfigService.get('APP_VERSION');
+    // Add custom build identifier to make it noticeable
+    // const currentVersion = appVersion
+    //   ? `${appVersion} (Custom Build)`
+    //   : 'Custom Build';
+    const currentVersion = 'pouya_test_version';
 
     try {
       const rawResponse = await axios.get<unknown>(
