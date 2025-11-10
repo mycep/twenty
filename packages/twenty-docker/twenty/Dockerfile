@@ -28,6 +28,12 @@ COPY ./packages/twenty-emails /app/packages/twenty-emails
 COPY ./packages/twenty-shared /app/packages/twenty-shared
 COPY ./packages/twenty-server /app/packages/twenty-server
 
+# Disable file watching during build (not needed in Docker, prevents ENOSPC errors)
+ENV CHOKIDAR_USEPOLLING=false
+ENV WATCHPACK_POLLING=false
+ENV NODE_OPTIONS="--max-old-space-size=4096"
+
+# Build the server
 RUN npx nx run twenty-server:build
 
 RUN yarn workspaces focus --production twenty-emails twenty-shared twenty-server
