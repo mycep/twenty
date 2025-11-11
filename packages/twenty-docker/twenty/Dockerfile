@@ -46,7 +46,13 @@ ARG REACT_APP_SERVER_BASE_URL
 COPY ./packages/twenty-front /app/packages/twenty-front
 COPY ./packages/twenty-ui /app/packages/twenty-ui
 COPY ./packages/twenty-shared /app/packages/twenty-shared
-RUN npx nx build twenty-front
+# Increase memory and reduce checks for Vite build in CI/Docker
+ENV NODE_OPTIONS="--max-old-space-size=4096"
+ENV VITE_DISABLE_TYPESCRIPT_CHECKER=true
+ENV VITE_DISABLE_ESLINT_CHECKER=true
+ENV VITE_SOURCEMAP=false
+# Build with verbose logs to surface errors clearly
+RUN npx nx build twenty-front --verbose
 
 
 # Final stage: Run the application
