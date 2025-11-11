@@ -56,6 +56,11 @@ ENV VITE_DISABLE_ESLINT_CHECKER=true
 ENV VITE_SOURCEMAP=false
 ENV VITE_LOG_LEVEL=debug
 ENV CI=false
+# Patch Vite config for Rollup v4: remove deprecated chunkSizeWarningLimit if present
+RUN set -e; \
+  if [ -f /app/packages/twenty-front/vite.config.ts ]; then \
+    sed -i '/chunkSizeWarningLimit/d' /app/packages/twenty-front/vite.config.ts; \
+  fi
 # Build with verbose logs; disable minify and sourcemaps to reduce memory usage
 RUN npx nx build twenty-front --skip-nx-cache --verbose -- --minify=false --sourcemap=false
 
