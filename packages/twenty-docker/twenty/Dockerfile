@@ -47,12 +47,14 @@ COPY ./packages/twenty-front /app/packages/twenty-front
 COPY ./packages/twenty-ui /app/packages/twenty-ui
 COPY ./packages/twenty-shared /app/packages/twenty-shared
 # Increase memory and reduce checks for Vite build in CI/Docker
-ENV NODE_OPTIONS="--max-old-space-size=4096"
+ENV NODE_OPTIONS="--max-old-space-size=8192"
 ENV VITE_DISABLE_TYPESCRIPT_CHECKER=true
 ENV VITE_DISABLE_ESLINT_CHECKER=true
 ENV VITE_SOURCEMAP=false
+ENV VITE_LOG_LEVEL=debug
+ENV CI=false
 # Build with verbose logs to surface errors clearly
-RUN npx nx build twenty-front --verbose
+RUN npx nx build twenty-front --skip-nx-cache --verbose
 
 
 # Final stage: Run the application
