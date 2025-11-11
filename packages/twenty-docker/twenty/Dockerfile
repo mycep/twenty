@@ -43,6 +43,9 @@ FROM common-deps AS twenty-front-build
 
 ARG REACT_APP_SERVER_BASE_URL
 
+# Ensure the var is available to the Vite build
+ENV REACT_APP_SERVER_BASE_URL=$REACT_APP_SERVER_BASE_URL
+
 COPY ./packages/twenty-front /app/packages/twenty-front
 COPY ./packages/twenty-ui /app/packages/twenty-ui
 COPY ./packages/twenty-shared /app/packages/twenty-shared
@@ -53,8 +56,8 @@ ENV VITE_DISABLE_ESLINT_CHECKER=true
 ENV VITE_SOURCEMAP=false
 ENV VITE_LOG_LEVEL=debug
 ENV CI=false
-# Build with verbose logs to surface errors clearly
-RUN npx nx build twenty-front --skip-nx-cache --verbose
+# Build with verbose logs; disable minify and sourcemaps to reduce memory usage
+RUN npx nx build twenty-front --skip-nx-cache --verbose -- --minify=false --sourcemap=false
 
 
 # Final stage: Run the application
