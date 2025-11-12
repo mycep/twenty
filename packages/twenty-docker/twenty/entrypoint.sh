@@ -18,6 +18,17 @@ setup_and_migrate_db() {
     fi
 
     yarn command:prod upgrade
+
+    # Sync workspace metadata to ensure all standard objects are available
+    echo "Syncing workspace metadata..."
+    yarn command:prod workspace:sync-metadata || echo "Warning: Workspace metadata sync failed, but continuing..."
+
+    # Seed dev data if enabled
+    if [ "${SEED_DEV_DATA}" = "true" ]; then
+        echo "Seeding development data..."
+        yarn command:prod workspace:seed:dev || echo "Warning: Data seeding failed, but continuing..."
+    fi
+
     echo "Successfully migrated DB!"
 }
 
