@@ -73,6 +73,14 @@ const SettingsEditImapSmtpCaldavConnection = lazy(() =>
   })),
 );
 
+const SettingsNewSmsConnection = lazy(() =>
+  import(
+    '@/settings/accounts/components/SettingsAccountsNewSmsConnection'
+  ).then((module) => ({
+    default: module.SettingsAccountsNewSmsConnection,
+  })),
+);
+
 const SettingsObjectDetailPage = lazy(() =>
   import('~/pages/settings/data-model/SettingsObjectDetailPage').then(
     (module) => ({
@@ -399,6 +407,10 @@ export const SettingsRoutes = ({ isAdminPageEnabled }: SettingsRoutesProps) => (
       <Route
         path={SettingsPath.EditImapSmtpCaldavConnection}
         element={<SettingsEditImapSmtpCaldavConnection />}
+      />
+      <Route
+        path={SettingsPath.NewSmsConnection}
+        element={<SettingsNewSmsConnection />}
       />
       <Route
         element={

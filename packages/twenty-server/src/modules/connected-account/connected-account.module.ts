@@ -5,6 +5,7 @@ import { DeleteWorkspaceMemberConnectedAccountsCleanupJob } from 'src/modules/co
 import { ConnectedAccountWorkspaceMemberListener } from 'src/modules/connected-account/listeners/connected-account-workspace-member.listener';
 import { ConnectedAccountListener } from 'src/modules/connected-account/listeners/connected-account.listener';
 import { AccountsToReconnectService } from 'src/modules/connected-account/services/accounts-to-reconnect.service';
+import { SmsAPIService } from 'src/modules/connected-account/services/sms-apis.service';
 
 @Module({
   imports: [UserVarsModule],
@@ -13,7 +14,8 @@ import { AccountsToReconnectService } from 'src/modules/connected-account/servic
     ConnectedAccountListener,
     DeleteWorkspaceMemberConnectedAccountsCleanupJob,
     ConnectedAccountWorkspaceMemberListener,
+    SmsAPIService,
   ],
-  exports: [AccountsToReconnectService],
+  exports: [AccountsToReconnectService, SmsAPIService],
 })
 export class ConnectedAccountModule {}

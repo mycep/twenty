@@ -72,6 +72,15 @@ export const SettingsAccountsListEmptyStateCard = () => {
           />
         </UndecoratedLink>
       )}
+
+      <UndecoratedLink
+        to={getSettingsPath(SettingsPath.NewSmsConnection)}
+      >
+        <SettingsCard
+          Icon={<IconAt size={theme.icon.size.md} />}
+          title={t`Connect SMS Account`}
+        />
+      </UndecoratedLink>
     </StyledCardsContainer>
   );
 };
