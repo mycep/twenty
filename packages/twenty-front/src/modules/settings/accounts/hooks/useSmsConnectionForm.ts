@@ -8,13 +8,9 @@ import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 
 import { t } from '@lingui/core/macro';
 import { SettingsPath } from 'twenty-shared/types';
-import {
-  useSaveSmsAccountMutation,
-  useGetConnectedSmsAccountQuery,
-} from '~/generated-metadata/graphql';
+import { useQuery, useMutation } from '@apollo/client';
 import { useNavigateSettings } from '~/hooks/useNavigateSettings';
 
-import { type SmsAccount } from '@/settings/accounts/types/SmsAccount';
 import {
   connectionSms,
   type ConnectionSmsFormData,
@@ -22,6 +18,7 @@ import {
 import { ApolloError } from '@apollo/client';
 import { isDefined } from 'twenty-shared/utils';
 import { GET_CONNECTED_SMS_ACCOUNT } from '@/settings/accounts/graphql/queries/getConnectedSmsAccount';
+import { SAVE_SMS_ACCOUNT } from '@/settings/accounts/graphql/mutations/saveSmsConnection';
 
 type UseSmsConnectionFormProps = {
   isEditing?: boolean;
@@ -50,11 +47,21 @@ export const useSmsConnectionForm = ({
   const { enqueueErrorSnackBar, enqueueSuccessSnackBar } = useSnackBar();
   const { isSubmitting } = formState;
 
-  const { data: accountData, loading: accountLoading } =
-    useGetConnectedSmsAccountQuery({
+  const { data: accountData, loading: accountLoading } = useQuery(
+    GET_CONNECTED_SMS_ACCOUNT,
+    {
       variables: { id: connectedAccountId! },
       skip: !isEditing || !connectedAccountId,
-      onCompleted: (data) => {
+      onCompleted: (data: {
+        getConnectedSmsAccount?: {
+          handle: string;
+          connectionParameters?: {
+            apiKey?: string;
+            secretKey?: string;
+            lineNumber?: string;
+          };
+        };
+      }) => {
         if (isDefined(data?.getConnectedSmsAccount)) {
           const account = data.getConnectedSmsAccount;
           const params = account.connectionParameters;
@@ -66,10 +73,12 @@ export const useSmsConnectionForm = ({
           });
         }
       },
-    });
+    },
+  );
 
-  const [saveConnection, { loading: saveLoading }] =
-    useSaveSmsAccountMutation();
+  const [saveConnection, { loading: saveLoading }] = useMutation(
+    SAVE_SMS_ACCOUNT,
+  );
 
   const watchedValues = watch();
 
@@ -101,7 +110,7 @@ export const useSmsConnectionForm = ({
               lineNumber: formValues.lineNumber,
             },
           },
-          refetchQueries: [GET_CONNECTED_SMS_ACCOUNT],
+          refetchQueries: [{ query: GET_CONNECTED_SMS_ACCOUNT }],
         });
         if (!isDefined(data)) return;
 
@@ -112,7 +121,7 @@ export const useSmsConnectionForm = ({
         enqueueSuccessSnackBar({ message: successMessage });
 
         const { connectedAccountId: returnedConnectedAccountId } =
-          data?.saveSmsAccount || {};
+          (data?.saveSmsAccount as { connectedAccountId?: string }) || {};
 
         navigate(SettingsPath.AccountsConfiguration, {
           connectedAccountId: returnedConnectedAccountId,
@@ -144,7 +153,16 @@ export const useSmsConnectionForm = ({
     canSave,
     isSubmitting,
     loading,
-    connectedAccount: accountData?.getConnectedSmsAccount,
+    connectedAccount: accountData?.getConnectedSmsAccount as
+      | {
+          handle: string;
+          connectionParameters?: {
+            apiKey?: string;
+            secretKey?: string;
+            lineNumber?: string;
+          };
+        }
+      | undefined,
   };
 };
 
