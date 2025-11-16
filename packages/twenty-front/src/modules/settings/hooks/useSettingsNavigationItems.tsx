@@ -21,11 +21,11 @@ import {
   IconKey,
   IconLock,
   IconMail,
+  IconPuzzle2,
   IconRocket,
   IconServer,
   IconSettings,
   IconSparkles,
-  IconPuzzle2,
   IconUserCircle,
   IconUsers,
   IconWorld,
@@ -162,6 +162,12 @@ const useSettingsNavigationItems = (): SettingsNavigationSection[] => {
             !isApplicationEnabled ||
             !permissionMap[PermissionFlagType.WORKSPACE],
           isNew: true,
+        },
+        {
+          label: t`Connections`,
+          path: SettingsPath.Connections,
+          Icon: IconAt,
+          isHidden: !permissionMap[PermissionFlagType.WORKSPACE],
         },
         {
           label: t`AI`,

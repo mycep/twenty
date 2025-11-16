@@ -1,29 +1,30 @@
-import { SettingsNewAccountSection } from '@/settings/accounts/components/SettingsNewAccountSection';
+import { SettingsConnectionTypeProviderForm } from '@/settings/accounts/components/SettingsConnectionTypeProviderForm';
 import { SettingsPageContainer } from '@/settings/components/SettingsPageContainer';
 import { SubMenuTopBarContainer } from '@/ui/layout/page/components/SubMenuTopBarContainer';
 import { t } from '@lingui/core/macro';
 import { SettingsPath } from 'twenty-shared/types';
 import { getSettingsPath } from 'twenty-shared/utils';
 
-export const SettingsNewAccount = () => {
+export const SettingsNewConnection = () => {
   return (
     <SubMenuTopBarContainer
-      title={t`New Account`}
+      title={t`Add Connection`}
       links={[
         {
-          children: t`User`,
-          href: getSettingsPath(SettingsPath.ProfilePage),
+          children: t`Workspace`,
+          href: getSettingsPath(SettingsPath.Workspace),
         },
         {
-          children: t`Accounts`,
-          href: getSettingsPath(SettingsPath.Accounts),
+          children: t`Connections`,
+          href: getSettingsPath(SettingsPath.Connections),
         },
-        { children: t`New` },
+        { children: t`Add` },
       ]}
     >
       <SettingsPageContainer>
-        <SettingsNewAccountSection />
+        <SettingsConnectionTypeProviderForm />
       </SettingsPageContainer>
     </SubMenuTopBarContainer>
   );
 };
+

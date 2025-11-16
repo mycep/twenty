@@ -6,6 +6,11 @@ alwaysApply: true
 
 # Twenty Architecture
 
+## Project Context
+**Important**: This is a forked project from the Twenty open source project. The project is being developed as a private project with a focus on:
+- **Localization**: Custom localization and internationalization features
+- **Private Development**: New features developed specifically for this private fork
+
 ## Tech Stack
 - **Frontend**: React 18, TypeScript, Recoil, Styled Components, Vite
 - **Backend**: NestJS, TypeORM, PostgreSQL, Redis, GraphQL
@@ -15,7 +20,7 @@ alwaysApply: true
 ```
 packages/
 ├── twenty-front/     # React app
-├── twenty-server/    # NestJS API  
+├── twenty-server/    # NestJS API
 ├── twenty-ui/        # Shared components
 ├── twenty-shared/    # Common types/utils
 └── twenty-emails/    # Email templates

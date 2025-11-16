@@ -81,6 +81,20 @@ const SettingsNewSmsConnection = lazy(() =>
   })),
 );
 
+const SettingsConnections = lazy(() =>
+  import('~/pages/settings/connections/SettingsConnections').then((module) => ({
+    default: module.SettingsConnections,
+  })),
+);
+
+const SettingsNewConnection = lazy(() =>
+  import('~/pages/settings/connections/SettingsNewConnection').then(
+    (module) => ({
+      default: module.SettingsNewConnection,
+    }),
+  ),
+);
+
 const SettingsObjectDetailPage = lazy(() =>
   import('~/pages/settings/data-model/SettingsObjectDetailPage').then(
     (module) => ({
@@ -447,6 +461,14 @@ export const SettingsRoutes = ({ isAdminPageEnabled }: SettingsRoutesProps) => (
         <Route
           path={SettingsPath.PublicDomain}
           element={<SettingPublicDomain />}
+        />
+        <Route
+          path={SettingsPath.Connections}
+          element={<SettingsConnections />}
+        />
+        <Route
+          path={SettingsPath.NewConnection}
+          element={<SettingsNewConnection />}
         />
       </Route>
       <Route
